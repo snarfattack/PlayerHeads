@@ -52,19 +52,26 @@ public class Tools {
 
     public static String fixcase(String inputName) {
         String inputNameLC = inputName.toLowerCase();
+        String outName = inputName;
+        
         Player player = Bukkit.getServer().getPlayerExact(inputNameLC);
 
         if (player != null) {
-            return player.getName();
+        	outName = player.getName();
+        }
+        else {
+	        for (OfflinePlayer offPlayer : Bukkit.getServer().getOfflinePlayers()) {
+	            if (offPlayer.getName().toLowerCase().equals(inputNameLC)) {
+	            	outName = offPlayer.getName();
+	            	break;
+	            }
+	        }
         }
 
-        for (OfflinePlayer offPlayer : Bukkit.getServer().getOfflinePlayers()) {
-            if (offPlayer.getName().toLowerCase().equals(inputNameLC)) {
-                return offPlayer.getName();
-            }
+        if (outName.startsWith("{") && outName.endsWith("}")) {
+        	return outName.split("\".+?\"")[0];
         }
-
-        return inputName;
+        return outName;
     }
 
     public static ItemStack Skull(String skullOwner) {

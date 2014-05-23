@@ -114,6 +114,8 @@ public class Lang {
     public static String OPT_AMOUNT_OPTIONAL;
     public static String OPT_HEADNAME_OPTIONAL;
     public static String OPT_HEADNAME_REQUIRED;
+    public static String OPT_DISPLAYNAME_OPTIONAL;
+    public static String OPT_DISPLAYNAME_REQUIRED;
     public static String OPT_RECEIVER_OPTIONAL;
     public static String OPT_RECEIVER_REQUIRED;
     public static String OPT_VALUE_OPTIONAL;

@@ -192,8 +192,8 @@ public class PlayerHeadsCommandExecutor implements CommandExecutor, TabCompleter
                 Tools.formatMsg(sender, Lang.BRACKET_LEFT + label + Lang.COLON + Lang.CMD_RENAME + Lang.BRACKET_RIGHT + Lang.SPACE + Lang.ERROR_PERMISSION);
                 return true;
             }
-            if (!((args.length == 1) || (args.length == 2))) {
-                Tools.formatMsg(sender, Lang.BRACKET_LEFT + label + Lang.COLON + Lang.CMD_RENAME + Lang.BRACKET_RIGHT + Lang.SPACE + Lang.SYNTAX + Lang.COLON_SPACE + label + Lang.SPACE + Lang.CMD_RENAME + Lang.SPACE + Lang.OPT_HEADNAME_OPTIONAL);
+            if (args.length < 2) {
+                Tools.formatMsg(sender, Lang.BRACKET_LEFT + label + Lang.COLON + Lang.CMD_RENAME + Lang.BRACKET_RIGHT + Lang.SPACE + Lang.SYNTAX + Lang.COLON_SPACE + label + Lang.SPACE + Lang.CMD_RENAME + Lang.SPACE + Lang.OPT_HEADNAME_OPTIONAL + Lang.SPACE + Lang.OPT_DISPLAYNAME_OPTIONAL);
                 return true;
             }
             ItemStack skullInput = ((Player) sender).getItemInHand();
@@ -203,10 +203,18 @@ public class PlayerHeadsCommandExecutor implements CommandExecutor, TabCompleter
             }
             ItemStack skullOutput;
             if (args.length >= 2) {
+            	String Owner = args[1];
                 if (plugin.configFile.getBoolean("fixcase")) {
-                    skullOutput = Tools.Skull(Tools.fixcase(args[1]));
+                	Owner = Tools.fixcase(Owner);
+                }
+                String disname = "";
+                for (int x = 2; x < args.length; x++){
+                	disname = disname + args[x] + " ";
+                }
+                if (args.length >= 3) {
+                    skullOutput = Tools.Skull(Owner, disname.trim());
                 } else {
-                    skullOutput = Tools.Skull(args[1]);
+                    skullOutput = Tools.Skull(Owner);
                 }
             } else {
                 skullOutput = Tools.Skull("");
