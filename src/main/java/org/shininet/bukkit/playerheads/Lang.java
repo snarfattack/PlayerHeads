@@ -39,6 +39,7 @@ public class Lang {
     public static String CMD_SET;
     public static String CMD_SPAWN;
     public static String CMD_UNKNOWN;
+    public static String CMD_COPY;
     public static String COLON;
     public static String COLON_SPACE;
     public static String COMMA_SPACE;
@@ -123,6 +124,7 @@ public class Lang {
     public static String RENAMED_HEAD;
     public static String SPACE;
     public static String SPAWNED_HEAD;
+    public static String COPIED_HEAD;
     public static String SUBCOMMANDS;
     public static String SYNTAX;
     public static String UPDATE1;

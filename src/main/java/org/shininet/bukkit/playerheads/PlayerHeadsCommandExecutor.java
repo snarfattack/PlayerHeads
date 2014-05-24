@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,6 +16,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 
 /**
  * @author meiskam
@@ -222,6 +224,39 @@ public class PlayerHeadsCommandExecutor implements CommandExecutor, TabCompleter
             skullOutput.setAmount(skullInput.getAmount());
             ((Player) sender).setItemInHand(skullOutput);
             Tools.formatMsg(sender, Lang.BRACKET_LEFT + label + Lang.COLON + Lang.CMD_RENAME + Lang.BRACKET_RIGHT + Lang.SPACE + Lang.RENAMED_HEAD);
+            return true;
+        } else if (args[0].equalsIgnoreCase(Tools.formatStrip(Lang.CMD_COPY))) {
+            if (!(sender instanceof Player)) {
+                Tools.formatMsg(sender, Lang.BRACKET_LEFT + label + Lang.COLON + Lang.CMD_SPAWN + Lang.BRACKET_RIGHT + Lang.SPACE + Lang.ERROR_CONSOLE_SPAWN);
+                return true;
+            }
+            if (!sender.hasPermission("playerheads.copy")) {
+                Tools.formatMsg(sender, Lang.BRACKET_LEFT + label + Lang.COLON + Lang.CMD_COPY + Lang.BRACKET_RIGHT + Lang.SPACE + Lang.ERROR_PERMISSION);
+                return true;
+            }
+            if (args.length > 2) {
+                Tools.formatMsg(sender, Lang.BRACKET_LEFT + label + Lang.COLON + Lang.CMD_COPY + Lang.BRACKET_RIGHT + Lang.SPACE + Lang.SYNTAX + Lang.COLON_SPACE + label + Lang.SPACE + Lang.CMD_COPY + Lang.SPACE + Lang.OPT_AMOUNT_OPTIONAL);
+                return true;
+            }
+            ItemStack skullInput = ((Player) sender).getItemInHand();
+            if (skullInput.getType() != Material.SKULL_ITEM) {
+                Tools.formatMsg(sender, Lang.BRACKET_LEFT + label + Lang.COLON + Lang.CMD_COPY + Lang.BRACKET_RIGHT + Lang.SPACE + Lang.ERROR_NOT_A_HEAD);
+                return true;
+            }
+            int quantity = Config.defaultStackSize;
+            if (args.length == 2) {
+                try {
+                    quantity = Integer.parseInt(args[1]);
+                } catch (NumberFormatException e) {
+                }
+            }
+            ItemStack skullOutput = skullInput.clone();
+            skullOutput.setAmount(quantity);
+            if (Tools.addItem((Player)sender, skullOutput)) {
+                Tools.formatMsg(sender, Lang.BRACKET_LEFT + label + Lang.COLON + Lang.CMD_SPAWN + Lang.BRACKET_RIGHT + Lang.SPACE + Lang.COPIED_HEAD);
+            } else {
+                Tools.formatMsg(sender, Lang.BRACKET_LEFT + label + Lang.COLON + Lang.CMD_SPAWN + Lang.BRACKET_RIGHT + Lang.SPACE + Lang.ERROR_INV_FULL);
+            }
             return true;
         } else {
             Tools.formatMsg(sender, Lang.BRACKET_LEFT + label + Lang.COLON + Lang.CMD_UNKNOWN + Lang.BRACKET_RIGHT + Lang.SPACE + Lang.ERROR_INVALID_SUBCOMMAND);

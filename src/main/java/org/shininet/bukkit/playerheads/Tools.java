@@ -37,7 +37,18 @@ public class Tools {
             return true;
         }
     }
-
+    
+    public static boolean addItem(Player player, ItemStack item) {
+        PlayerInventory inv = player.getInventory();
+        int firstEmpty = inv.firstEmpty();
+        if (firstEmpty == -1) {
+            return false;
+        } else {
+            inv.setItem(firstEmpty, item);
+            return true;
+        }
+    }
+    
     public static String implode(Set<String> input, String glue) {
         int i = 0;
         StringBuilder output = new StringBuilder();
